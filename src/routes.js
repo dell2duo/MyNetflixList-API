@@ -15,7 +15,7 @@ routes.post("/create_profile", userController.createProfile);
 
 routes.post("/login", authController.login);
 
-// routes.use(authController.authenticate); //middleware que autentica e valida o JWT do usuário
+routes.use(authController.authenticate); //middleware que autentica e valida o JWT do usuário
 
 routes.post("/list_profiles", userController.listProfiles);
 routes.post("/put_movie", movieController.putMovie);
