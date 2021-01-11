@@ -27,9 +27,10 @@ async function login(req, res) {
 }
 
 async function authenticate(req, res, next) {
-  console.log("autenticando");
+  const token = req.headers.authorization.split(" ")[1];
+
   try {
-    jwt.verify(req.headers.auth, process.env.JWT_PRIVATE_KEY);
+    jwt.verify(token, process.env.JWT_PRIVATE_KEY);
     next();
   } catch {
     return res.sendStatus(401);
