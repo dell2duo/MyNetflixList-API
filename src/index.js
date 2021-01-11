@@ -2,7 +2,7 @@ const express = require("express"); //servidor node
 const routes = require("./routes"); //arquivo de rotas
 const cors = require("cors"); //middleware de autorização de acesso
 
-const mailController = require("./controllers/mailer.controller");
+// const mailController = require("./controllers/mailer.controller");
 
 const app = express(); //cria o servidor
 
@@ -12,7 +12,7 @@ app.use(cors()); // atualmente qualquer um consegue utilizar essa api
 
 app.use(routes, () => {}); //uso do arquivo routes para rotas
 
-app.listen(3333); //indica a porta 3333 para uso do express
+app.listen(process.env.PORT || 3333); //indica a porta 3333 para uso do express
 
 // const interval = 1; //minutos
 // const milli = 60000; //1 minuto em millisegundos
