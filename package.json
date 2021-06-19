@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon src/index.js",
-    "start": "nodemon src/index.js"
+    "test": "jest",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js --ignore __tests__"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "jest": "^27.0.4",
     "nodemon": "^2.0.6"
   }
 }
