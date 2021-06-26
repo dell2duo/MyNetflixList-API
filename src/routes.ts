@@ -1,11 +1,11 @@
 const routes = require("express").Router();
+import { Request, Response } from 'express';
 
 const userController = require("./controllers/user.controller");
 const authController = require("./controllers/auth.controller");
 const movieController = require("./controllers/movie.controller");
 
-routes.get("/", (req, res) => {
-  console.log("alou mundão");
+routes.get("/", (req: Request, res: Response) => {
   return res.sendStatus(200);
 });
 

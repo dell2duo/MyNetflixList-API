@@ -2,7 +2,9 @@ const connection = require("../database/connection");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-async function login(req, res) {
+import { Request, Response, NextFunction} from 'express'
+
+async function login(req: Request, res: Response) {
   const data = req.body;
   return await connection("contas")
     .select("*")
@@ -26,7 +28,7 @@ async function login(req, res) {
     });
 }
 
-async function authenticate(req, res, next) {
+async function authenticate(req: Request, res: Response, next: NextFunction) {
   const token = req.headers.authorization.split(" ")[1];
 
   try {

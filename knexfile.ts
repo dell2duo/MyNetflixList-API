@@ -1,9 +1,21 @@
 // Update with your config settings.
-require("dotenv").config();
+require("dotenv").config({
+  path: process.env.NODE_ENV === "test" ? ".env.test" : ".env",
+});
 module.exports = {
   development: {
     client: "pg",
     connection: process.env.DB_URL,
+    migrations: {
+      directory: "./src/database/migrations",
+      tableName: "knex_migrations",
+    },
+    useNullAsDefault: true,
+  },
+
+  test: {
+    client: "pg",
+    connection: process.env.DB_URL_TEST,
     migrations: {
       directory: "./src/database/migrations",
       tableName: "knex_migrations",
