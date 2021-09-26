@@ -10,7 +10,7 @@
     "pretest": "knex migrate:latest --env test",
     "test": "NODE_ENV=test jest",
     "posttest": "knex migrate:rollback --all --env test",
-    "start": "node src/index.ts",
+    "start": "tsc && node build/index.js",
     "dev": "nodemon src/index.ts --ignore __tests__"
   },
   "keywords": [],
@@ -29,10 +29,15 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.12",
     "@types/jest": "^26.0.23",
+    "@types/jsonwebtoken": "^8.5.2",
     "@types/node": "^15.12.4",
     "@types/uuid": "^8.3.0",
+    "@typescript-eslint/eslint-plugin": "^4.28.0",
+    "@typescript-eslint/parser": "^4.28.0",
+    "eslint": "^7.29.0",
     "jest": "^27.0.5",
     "mock-knex": "^0.4.10",
     "nodemon": "^2.0.6",

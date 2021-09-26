@@ -1,45 +1,54 @@
-const connection = require("../database/connection");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
-import { Request, Response, NextFunction} from 'express'
+import DatabaseRequester from "../controllers/DatabaseRequester";
 
-async function login(req: Request, res: Response) {
-  const data = req.body;
-  return await connection("contas")
-    .select("*")
-    .where("email", data.email)
-    .first()
-    .then((conta) => {
-      const match = bcrypt.compareSync(data.senha, conta.senha);
-      if (match) {
-        res.status(200).json({
-          nome: conta.nome,
-          id_conta: conta.id,
-          jwt: jwt.sign({ id: conta.id }, process.env.JWT_PRIVATE_KEY),
-        });
-      } else {
-        res.status(401).json({ msg: "Senha incorreta!" });
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(404).json({ msg: "Usuário não encontrado." });
-    });
+import { Request, Response, NextFunction } from "express";
+
+interface Account {
+  id: string;
+  name: string;
+  password_hash: string;
+  email: string;
+  birthdate: string;
+  created_at: string;
+  timestamp: string;
 }
 
-async function authenticate(req: Request, res: Response, next: NextFunction) {
-  const token = req.headers.authorization.split(" ")[1];
+export default class AuthController extends DatabaseRequester {
+  async login(req: Request, res: Response): Promise<Response> {
+    const { email, password } = req.body;
 
-  try {
-    jwt.verify(token, process.env.JWT_PRIVATE_KEY);
-    next();
-  } catch {
-    return res.sendStatus(401);
+    const user = await this.dbRequest<Account>("accounts")
+      .select("*")
+      .where("email", email)
+      .first();
+
+    const match = bcrypt.compareSync(password, user?.password_hash || "");
+
+    if (match) {
+      return res.status(200).json({
+        name: user?.name,
+        account_id: user?.id,
+        jwt: jwt.sign({ id: user?.id }, process.env.JWT_PRIVATE_KEY || ""),
+      });
+    } else {
+      return res.sendStatus(404);
+    }
+  }
+
+  async authenticate(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void | Response> {
+    const token = req.headers.authorization?.split(" ")[1];
+
+    try {
+      jwt.verify(token || "", process.env.JWT_PRIVATE_KEY || "");
+      next();
+    } catch {
+      return res.sendStatus(401);
+    }
   }
 }
-
-module.exports = {
-  login,
-  authenticate,
-};
