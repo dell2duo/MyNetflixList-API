@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "tsnd --transpile-only --respawn --ignore-watch node_modules src/server.ts",
+    "dev": "tsnd --inspect --transpile-only --respawn --ignore-watch node_modules src/server.ts",
     "test": "jest"
   },
   "devDependencies": {
